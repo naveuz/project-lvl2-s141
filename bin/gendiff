@@ -23,8 +23,12 @@ Options:
 
 DOC;
 
-$handler = new \Docopt\Handler([
-    'help'=>true,
-    'optionsFirst'=>false,
-]);
-$handler->handle($doc, $argv);
+$handler = new \Docopt\Handler();
+$args = $handler->handle($doc);
+
+$diff = \Gendiff\differ\genDiff(
+    $args["--format"],
+    $args["<firstFile>"],
+    $args["<secondFile>"]
+);
+print_r($diff);
