@@ -1,20 +1,27 @@
 {
-  "name": "naveuz/gendiff",
-  "type": "library",
-  "authors": [
-      {
-          "name": "Alexander Zuev",
-          "email": "az.gost@gmail.com"
-      }
-  ],
-  "bin": ["bin/gendiff"],
-  "scripts": {
-    "phpcs": "phpcs"
-  },
-  "require": {
-    "docopt/docopt": "^1.0"
-  },
-  "require-dev": {
-    "squizlabs/php_codesniffer": "*"
-  }
+    "name": "naveuz/gendiff",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Alexander Zuev",
+            "email": "az.gost@gmail.com"
+        }
+    ],
+    "bin": ["bin/gendiff"],
+    "scripts": {
+        "phpcs": "phpcs",
+        "phpunit": "phpunit"
+    },
+    "autoload": {
+        "files": [
+            "src/differ.php"
+        ]
+    },
+    "require": {
+        "docopt/docopt": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*",
+        "squizlabs/php_codesniffer": "*"
+    }
 }
