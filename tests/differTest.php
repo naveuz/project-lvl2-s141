@@ -25,7 +25,17 @@ class DifferTest extends TestCase
                 '}',
                 'pretty',
                 'tests/fixtures/before.json',
-                'tests/fixtures/after.json']
+                'tests/fixtures/after.json'],
+                ['{'.PHP_EOL.'   host: hexlet.io'.PHP_EOL.
+                 ' + timeout: 20'.PHP_EOL.
+                 ' - timeout: 50'.PHP_EOL.
+                 ' - proxy: 123.234.53.22'.PHP_EOL.
+                 ' + port: 3306'.PHP_EOL.
+                 ' + prot: http'.PHP_EOL.
+                '}',
+                'pretty',
+                'tests/fixtures/before.yml',
+                'tests/fixtures/after.yml']
         ];
     }
 }
