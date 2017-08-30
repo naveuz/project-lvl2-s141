@@ -2,19 +2,17 @@
 
 namespace Gendiff\differ;
 
+use Funct\Collection;
+use Gendiff\parser;
+
 function genDiff($format, $pathToFile1, $pathToFile2)
 {
-    $arrBefore = jsonToArray($pathToFile1);
-    $arrAfter = jsonToArray($pathToFile2);
+    $arrBefore = parseJson($pathToFile1);
+    $arrAfter = parseJson($pathToFile2);
 
     $arrDiff = getDiffArray($arrBefore, $arrAfter);
 
     return arrayToPretty($arrDiff);
-}
-
-function jsonToArray($filePath)
-{
-    return json_decode(file_get_contents($filePath), true);
 }
 
 function arrayToPretty(array $data)
@@ -28,31 +26,23 @@ function arrayToPretty(array $data)
 
 function getDiffArray(array $before, array $after)
 {
+    $keys = Collection\union(array_keys($before), array_keys($after));
 
-    $result = array_reduce(array_keys($before), function ($acc, $key) use ($before, $after) {
+    return array_reduce($keys, function ($acc, $key) use ($before, $after) {
 
-        if (array_key_exists($key, $after)) {
+        if (array_key_exists($key, $before) && array_key_exists($key, $after)) {
             if ($before[$key] !== $after[$key]) {
                 $acc["+ {$key}"] = $after[$key];
                 $acc["- {$key}"] = $before[$key];
             } else {
                 $acc["  $key"] = $before[$key];
             }
-        } else {
+        } elseif (array_key_exists($key, $before)) {
             $acc["- {$key}"] = $before[$key];
-        }
-
-        return $acc;
-    }, []);
-
-    $added = array_reduce(array_keys($after), function ($acc, $key) use ($before, $after) {
-
-        if (!array_key_exists($key, $before)) {
+        } else {
             $acc["+ {$key}"] = $after[$key];
         }
 
         return $acc;
     }, []);
-
-    return array_merge($result, $added);
 }
