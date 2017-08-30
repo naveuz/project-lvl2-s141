@@ -7,21 +7,26 @@ use Gendiff\parser;
 
 function genDiff($format, $pathToFile1, $pathToFile2)
 {
-    $arrBefore = parser\parseJson($pathToFile1);
-    $arrAfter = parser\parseJson($pathToFile2);
+    $arrBefore = parseFile($pathToFile1);
+    $arrAfter = parseFile($pathToFile2);
 
     $arrDiff = getDiffArray($arrBefore, $arrAfter);
 
     return arrayToPretty($arrDiff);
 }
 
-function arrayToPretty(array $data)
+function parseFile($pathToFile)
 {
-    $pretty = array_map(function ($key, $value) {
-        return " {$key}: {$value}" . PHP_EOL;
-    }, array_keys($data), $data);
+    $fileInfo = new \SplFileInfo($pathToFile);
+    $extension = $fileInfo->getExtension();
 
-    return "{" . PHP_EOL . join('', $pretty) . "}";
+    switch ($extension) {
+        case 'json':
+            return parser\parseJson($pathToFile);
+
+        case 'yml':
+            return parser\parseYaml($pathToFile);
+    }
 }
 
 function getDiffArray(array $before, array $after)
@@ -45,4 +50,13 @@ function getDiffArray(array $before, array $after)
 
         return $acc;
     }, []);
+}
+
+function arrayToPretty(array $data)
+{
+    $pretty = array_map(function ($key, $value) {
+        return " {$key}: {$value}" . PHP_EOL;
+    }, array_keys($data), $data);
+
+    return "{" . PHP_EOL . join('', $pretty) . "}";
 }
