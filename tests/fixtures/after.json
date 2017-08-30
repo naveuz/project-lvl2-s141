@@ -1,0 +1,6 @@
+{
+  "timeout": 20,
+  "port": 3306,
+  "host": "hexlet.io",
+  "prot": "http"
+}
