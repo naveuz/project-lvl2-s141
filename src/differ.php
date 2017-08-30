@@ -7,8 +7,8 @@ use Gendiff\parser;
 
 function genDiff($format, $pathToFile1, $pathToFile2)
 {
-    $arrBefore = parseJson($pathToFile1);
-    $arrAfter = parseJson($pathToFile2);
+    $arrBefore = parser\parseJson($pathToFile1);
+    $arrAfter = parser\parseJson($pathToFile2);
 
     $arrDiff = getDiffArray($arrBefore, $arrAfter);
 
