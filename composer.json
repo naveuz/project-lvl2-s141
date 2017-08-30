@@ -14,7 +14,8 @@
     },
     "autoload": {
         "files": [
-            "src/differ.php"
+            "src/differ.php",
+            "src/parser.php"
         ]
     },
     "require": {
