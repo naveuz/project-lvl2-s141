@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6ea3e6b5742ee4e0ff554a1582d44ab1",
+    "content-hash": "e079164fa911b06e8bb91c87451fa0d1",
     "packages": [
         {
             "name": "docopt/docopt",
@@ -51,6 +51,109 @@
                 "docs"
             ],
             "time": "2015-10-30T03:21:23+00:00"
+        },
+        {
+            "name": "funct/funct",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpfunct/funct.git",
+                "reference": "0c8a8bdc4c1c203295a4d8525b35df715c511ddb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpfunct/funct/zipball/0c8a8bdc4c1c203295a4d8525b35df715c511ddb",
+                "reference": "0c8a8bdc4c1c203295a4d8525b35df715c511ddb",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Funct\\": "src"
+                },
+                "files": [
+                    "src/Collection.php",
+                    "src/General.php",
+                    "src/Invoke.php",
+                    "src/Object.php",
+                    "src/Strings.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aurimas Niekis",
+                    "email": "aurimas@niekis.lt"
+                }
+            ],
+            "description": "A PHP library with commonly used code blocks",
+            "time": "2016-07-22T12:05:22+00:00"
+        },
+        {
+            "name": "symfony/yaml",
+            "version": "v3.3.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/yaml.git",
+                "reference": "1d8c2a99c80862bdc3af94c1781bf70f86bccac0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/1d8c2a99c80862bdc3af94c1781bf70f86bccac0",
+                "reference": "1d8c2a99c80862bdc3af94c1781bf70f86bccac0",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.5.9|>=7.0.8"
+            },
+            "require-dev": {
+                "symfony/console": "~2.8|~3.0"
+            },
+            "suggest": {
+                "symfony/console": "For validating YAML files using the lint command"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Yaml\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Yaml Component",
+            "homepage": "https://symfony.com",
+            "time": "2017-07-29T21:54:42+00:00"
         }
     ],
     "packages-dev": [
