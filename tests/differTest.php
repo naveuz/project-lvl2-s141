@@ -16,19 +16,16 @@ class DifferTest extends TestCase
     }
     public function additionProvider()
     {
-        return [
-            [
-'{
-   host: hexlet.io
- + timeout: 20
- - timeout: 50
- - proxy: 123.234.53.22
- + port: 3306
- + prot: http
-}',
-            'pretty',
-            'tests/fixtures/before.json',
-            'tests/fixtures/after.json']
+        return [['{'.PHP_EOL.'   host: hexlet.io'.PHP_EOL.
+                 ' + timeout: 20'.PHP_EOL.
+                 ' - timeout: 50'.PHP_EOL.
+                 ' - proxy: 123.234.53.22'.PHP_EOL.
+                 ' + port: 3306'.PHP_EOL.
+                 ' + prot: http'.PHP_EOL.
+                '}',
+                'pretty',
+                'tests/fixtures/before.json',
+                'tests/fixtures/after.json']
         ];
     }
 }
