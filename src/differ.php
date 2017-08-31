@@ -3,12 +3,17 @@
 namespace Gendiff\differ;
 
 use Funct\Collection;
-use Gendiff\parser;
+use function Gendiff\parser\parseData;
+use function Gendiff\lib\getData;
+use function Gendiff\lib\getFileFormat;
 
 function genDiff($format, $pathToFile1, $pathToFile2)
 {
-    $arrBefore = parser\parseFile($pathToFile1);
-    $arrAfter = parser\parseFile($pathToFile2);
+    $extFile1 = getFileFormat($pathToFile1);
+    $extFile2 = getFileFormat($pathToFile2);
+
+    $arrBefore = parseData(getData($pathToFile1), $extFile1);
+    $arrAfter = parseData(getData($pathToFile2), $extFile2);
 
     $arrDiff = getDiffArray($arrBefore, $arrAfter);
 
