@@ -7,26 +7,12 @@ use Gendiff\parser;
 
 function genDiff($format, $pathToFile1, $pathToFile2)
 {
-    $arrBefore = parseFile($pathToFile1);
-    $arrAfter = parseFile($pathToFile2);
+    $arrBefore = parser\parseFile($pathToFile1);
+    $arrAfter = parser\parseFile($pathToFile2);
 
     $arrDiff = getDiffArray($arrBefore, $arrAfter);
 
     return arrayToPretty($arrDiff);
-}
-
-function parseFile($pathToFile)
-{
-    $fileInfo = new \SplFileInfo($pathToFile);
-    $extension = $fileInfo->getExtension();
-
-    switch ($extension) {
-        case 'json':
-            return parser\parseJson($pathToFile);
-
-        case 'yml':
-            return parser\parseYaml($pathToFile);
-    }
 }
 
 function getDiffArray(array $before, array $after)
@@ -36,11 +22,15 @@ function getDiffArray(array $before, array $after)
     return array_reduce($keys, function ($acc, $key) use ($before, $after) {
 
         if (array_key_exists($key, $before) && array_key_exists($key, $after)) {
-            if ($before[$key] !== $after[$key]) {
-                $acc["+ {$key}"] = $after[$key];
-                $acc["- {$key}"] = $before[$key];
+            if (is_array($before[$key]) && is_array($after[$key])) {
+                $acc[$key] = getDiffArray($before[$key], $after[$key]);
             } else {
-                $acc["  $key"] = $before[$key];
+                if ($before[$key] !== $after[$key]) {
+                    $acc["+ {$key}"] = $after[$key];
+                    $acc["- {$key}"] = $before[$key];
+                } else {
+                    $acc["  $key"] = $before[$key];
+                }
             }
         } elseif (array_key_exists($key, $before)) {
             $acc["- {$key}"] = $before[$key];
@@ -58,5 +48,5 @@ function arrayToPretty(array $data)
         return " {$key}: {$value}" . PHP_EOL;
     }, array_keys($data), $data);
 
-    return "{" . PHP_EOL . join('', $pretty) . "}";
+    return "{" . PHP_EOL .join('', $pretty) . "}";
 }
