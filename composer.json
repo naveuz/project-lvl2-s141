@@ -15,7 +15,8 @@
     "autoload": {
         "files": [
             "src/differ.php",
-            "src/parser.php"
+            "src/parser.php",
+            "src/lib.php"
         ]
     },
     "require": {
