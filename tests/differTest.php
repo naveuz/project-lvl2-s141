@@ -34,6 +34,18 @@ class DifferTest extends TestCase
    }
 
 DOC;
+
+    const PLAIN = <<<DOC
+Property 'common.setting2' was removed
+Property 'common.setting6' was removed
+Property 'common.setting4' was added with value: 'blah blah'
+Property 'common.setting5' was added with value: 'complex value'
+Property 'group1.baz' was changed.From 'bas' to 'bars'
+Property 'group2' was removed
+Property 'group3' was added with value: 'complex value'
+
+DOC;
+
     /**
      * @dataProvider additionProvider
      */
@@ -43,15 +55,10 @@ DOC;
     }
     public function additionProvider()
     {
-        return [[PHP_EOL.'   "host": "hexlet.io"'.PHP_EOL.
-                 '  -"timeout": "50"'.PHP_EOL.
-                 '  +"timeout": "20"'.PHP_EOL.
-                 '  -"proxy": "123.234.53.22"'.PHP_EOL.
-                 '  +"port": "3306"'.PHP_EOL.
-                 '  +"prot": "http"'.PHP_EOL,
-                'pretty',
-                'tests/fixtures/before.json',
-                'tests/fixtures/after.json'],
+        return [[self::PLAIN,
+                'plain',
+                'tests/fixtures/before-recur.json',
+                'tests/fixtures/after-recur.json'],
                 [PHP_EOL.'   "host": "hexlet.io"'.PHP_EOL.
                  '  -"timeout": "50"'.PHP_EOL.
                  '  +"timeout": "20"'.PHP_EOL.
