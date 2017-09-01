@@ -16,7 +16,8 @@
         "files": [
             "src/differ.php",
             "src/parser.php",
-            "src/lib.php"
+            "src/lib.php",
+            "src/formatter.php"
         ]
     },
     "require": {
