@@ -8,10 +8,34 @@ function outData(array $data, $format)
         case 'pretty':
             return astToPretty($data);
 
-        default:
-            # code...
-            break;
+        case 'plain':
+            return astToPlain($data);
     }
+}
+
+function astToPlain(array $ast, $parent = '')
+{
+    $plain = array_map(function ($element) use ($parent) {
+
+        switch ($element['type']) {
+            case 'parent':
+                $parent .= "{$element['node']}.";
+                return astToPlain($element['children'], $parent);
+
+            case 'changed':
+                return "Property '{$parent}{$element['node']}' was changed.".
+                    "From '{$element['from']}' to '{$element['to']}'".PHP_EOL;
+
+            case 'added':
+                $value = is_array($element['to']) ? 'complex value' : $element['to'];
+                return "Property '{$parent}{$element['node']}' was added with value: '{$value}'".PHP_EOL;
+
+            case 'removed':
+                return "Property '{$parent}{$element['node']}' was removed".PHP_EOL;
+        }
+    }, $ast);
+
+    return join('', $plain);
 }
 
 function astToPretty(array $ast, $lvl = 1)
