@@ -6,15 +6,16 @@ use Funct\Collection;
 use function Gendiff\parser\parseData;
 use function Gendiff\lib\getData;
 use function Gendiff\lib\getFileFormat;
+use function Gendiff\formatter\outData;
 
 function genDiff($format, $pathToFile1, $pathToFile2)
 {
     $arrBefore = parseData(getData($pathToFile1), getFileFormat($pathToFile1));
     $arrAfter = parseData(getData($pathToFile2), getFileFormat($pathToFile2));
 
-    $arrDiff = getDiffArray($arrBefore, $arrAfter);
+    $ast = getDiffArray($arrBefore, $arrAfter);
 
-    return arrayToPretty($arrDiff);
+    return outData($ast, $format);
 }
 
 function getDiffArray(array $before, array $after)
@@ -25,30 +26,34 @@ function getDiffArray(array $before, array $after)
 
         if (array_key_exists($key, $before) && array_key_exists($key, $after)) {
             if (is_array($before[$key]) && is_array($after[$key])) {
-                $acc[$key] = getDiffArray($before[$key], $after[$key]);
+                $acc[] = ['node' => $key,
+                          'type' => 'parent',
+                          'children' => getDiffArray($before[$key], $after[$key])];
             } else {
                 if ($before[$key] !== $after[$key]) {
-                    $acc["+ {$key}"] = $after[$key];
-                    $acc["- {$key}"] = $before[$key];
+                    $acc[] = ['node' => $key,
+                              'type' => 'changed',
+                              'from' => $before[$key],
+                              'to' => $after[$key]];
                 } else {
-                    $acc["  $key"] = $before[$key];
+                    $acc[] = ['node' => $key,
+                              'type' => 'unchanged',
+                              'from' => $before[$key],
+                              'to' => $after[$key]];
                 }
             }
         } elseif (array_key_exists($key, $before)) {
-            $acc["- {$key}"] = $before[$key];
+            $acc[] = ['node' => $key,
+                      'type' => 'removed',
+                      'from' => $before[$key],
+                      'to' => null];
         } else {
-            $acc["+ {$key}"] = $after[$key];
+            $acc[] = ['node' => $key,
+                      'type' => 'added',
+                      'from' => null,
+                      'to' => $after[$key]];
         }
 
         return $acc;
     }, []);
-}
-
-function arrayToPretty(array $data)
-{
-    $pretty = array_map(function ($key, $value) {
-        return " {$key}: {$value}" . PHP_EOL;
-    }, array_keys($data), $data);
-
-    return "{" . PHP_EOL .join('', $pretty) . "}";
 }
