@@ -12,7 +12,15 @@ function outData(array $data, $format)
 
         case 'plain':
             return astToPlain($data);
+
+        case 'json':
+            return astToJson($data);
     }
+}
+
+function astToJson(array $ast)
+{
+    return json_encode($ast);
 }
 
 function astToPlain(array $ast, $parent = '')
