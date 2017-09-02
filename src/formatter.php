@@ -2,6 +2,8 @@
 
 namespace Gendiff\formatter;
 
+use Funct\Collection;
+
 function outData(array $data, $format)
 {
     switch ($format) {
@@ -40,54 +42,49 @@ function astToPlain(array $ast, $parent = '')
 
 function astToPretty(array $ast, $lvl = 1)
 {
-    switch ($lvl) {
-        case '1':
-            $t = '  ';
-            break;
-        case '2':
-            $t = '    ';
-            break;
-        case '3':
-            $t = '      ';
-            break;
-    }
-    $pretty = array_map(function ($element) use ($lvl, $t) {
+    $pretty = array_map(function ($element) use ($lvl) {
 
         switch ($element['type']) {
             case 'parent':
-                return "{$t} \"{$element['node']}\": {" .
-                    astToPretty($element['children'], $lvl + 1) . "{$t} }".PHP_EOL;
+                return [genIndent($lvl)." \"{$element['node']}\": {".PHP_EOL.
+                    astToPretty($element['children'], $lvl + 1) .PHP_EOL.genIndent($lvl)." }"];
 
             case 'unchanged':
-                return "{$t} \"{$element['node']}\": \"{$element['from']}\"".PHP_EOL;
+                return [genIndent($lvl)." \"{$element['node']}\": \"{$element['from']}\""];
 
             case 'changed':
-                return "{$t}-\"{$element['node']}\": \"{$element['from']}\"".PHP_EOL.
-                       "{$t}+\"{$element['node']}\": \"{$element['to']}\"".PHP_EOL;
+                return [[genIndent($lvl)."-\"{$element['node']}\": \"{$element['from']}\""],
+                       [genIndent($lvl)."+\"{$element['node']}\": \"{$element['to']}\""]];
 
             case 'added':
                 if (is_array($element['to'])) {
-                    return "{$t}+\"{$element['node']}\": {".PHP_EOL.
-                        getElements($element['to'], $t) . "{$t} }".PHP_EOL;
+                    return [genIndent($lvl)."+\"{$element['node']}\": {".PHP_EOL.
+                        getElements($element['to'], $lvl + 1) .PHP_EOL.genIndent($lvl)." }"];
                 }
-                return "{$t}+\"{$element['node']}\": \"{$element['to']}\"".PHP_EOL;
+                return [genIndent($lvl)."+\"{$element['node']}\": \"{$element['to']}\""];
 
             case 'removed':
                 if (is_array($element['from'])) {
-                    return "{$t}-\"{$element['node']}\": {".PHP_EOL.
-                        getElements($element['from'], $t) . "{$t} }".PHP_EOL;
+                    return [genIndent($lvl)."-\"{$element['node']}\": {".PHP_EOL.
+                        getElements($element['from'], $lvl + 1) .PHP_EOL.genIndent($lvl)." }"];
                 }
-                return "{$t}-\"{$element['node']}\": \"{$element['from']}\"".PHP_EOL;
+                return [genIndent($lvl)."-\"{$element['node']}\": \"{$element['from']}\""];
         }
     }, $ast);
 
-    return PHP_EOL . join('', $pretty);
+    return join(PHP_EOL, Collection\flattenAll($pretty));
 }
 
-function getElements(array $array, $t)
+function genIndent($lvl)
 {
-    $arr = array_map(function ($key, $value) use ($t) {
-        return "{$t}   \"{$key}\": \"{$value}\"".PHP_EOL;
+    return str_repeat(' ', $lvl * 2);
+}
+
+function getElements(array $array, $lvl)
+{
+    $arr = array_map(function ($key, $value) use ($lvl) {
+        return genIndent($lvl)." \"{$key}\": \"{$value}\"";
     }, array_keys($array), $array);
-    return join('', $arr);
+
+    return join(PHP_EOL, Collection\flattenAll($arr));
 }
