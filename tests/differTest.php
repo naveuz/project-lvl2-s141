@@ -44,6 +44,8 @@ Property 'group3' was added with value: 'complex value'
 
 DOC;
 
+    const JSON = '[{"node":"host","type":"unchanged","from":"hexlet.io","to":"hexlet.io"},{"node":"timeout","type":"changed","from":50,"to":20},{"node":"proxy","type":"removed","from":"123.234.53.22","to":null},{"node":"port","type":"added","from":null,"to":3306},{"node":"prot","type":"added","from":null,"to":"http"}]';
+
     /**
      * @dataProvider additionProvider
      */
@@ -57,13 +59,8 @@ DOC;
                 'plain',
                 'tests/fixtures/before-recur.json',
                 'tests/fixtures/after-recur.json'],
-                ['   "host": "hexlet.io"'.PHP_EOL.
-                 '  -"timeout": "50"'.PHP_EOL.
-                 '  +"timeout": "20"'.PHP_EOL.
-                 '  -"proxy": "123.234.53.22"'.PHP_EOL.
-                 '  +"port": "3306"'.PHP_EOL.
-                 '  +"prot": "http"',
-                'pretty',
+                [self::JSON,
+                'json',
                 'tests/fixtures/before.yml',
                 'tests/fixtures/after.yml'],
                 [self::PRETTY,
