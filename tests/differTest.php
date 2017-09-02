@@ -8,7 +8,6 @@ use function Gendiff\differ\genDiff;
 class DifferTest extends TestCase
 {
     const PRETTY = <<<DOC
-
    "common": {
      "setting1": "Value 1"
     -"setting2": "200"
@@ -32,7 +31,6 @@ class DifferTest extends TestCase
   +"group3": {
      "fee": "100500"
    }
-
 DOC;
 
     const PLAIN = <<<DOC
@@ -59,12 +57,12 @@ DOC;
                 'plain',
                 'tests/fixtures/before-recur.json',
                 'tests/fixtures/after-recur.json'],
-                [PHP_EOL.'   "host": "hexlet.io"'.PHP_EOL.
+                ['   "host": "hexlet.io"'.PHP_EOL.
                  '  -"timeout": "50"'.PHP_EOL.
                  '  +"timeout": "20"'.PHP_EOL.
                  '  -"proxy": "123.234.53.22"'.PHP_EOL.
                  '  +"port": "3306"'.PHP_EOL.
-                 '  +"prot": "http"'.PHP_EOL,
+                 '  +"prot": "http"',
                 'pretty',
                 'tests/fixtures/before.yml',
                 'tests/fixtures/after.yml'],
